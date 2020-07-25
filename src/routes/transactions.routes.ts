@@ -16,9 +16,14 @@ transactionsRouter.post('/', async (request, response) => {
 
   const transactionService = new CreateTransactionService();
 
-  transactionService.execute({ title, value, type, category });
+  const newTransaction = await transactionService.execute({
+    title,
+    value,
+    type,
+    category,
+  });
 
-  response.send({});
+  response.status(200).send(newTransaction);
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {

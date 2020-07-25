@@ -5,6 +5,7 @@ import { getRepository, getCustomRepository } from 'typeorm';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 
 import Category from '../models/Category';
+import Transaction from '../models/Transaction';
 
 interface Request {
   title: string;
@@ -19,7 +20,7 @@ class CreateTransactionService {
     value,
     type,
     category,
-  }: Request): Promise<void> {
+  }: Request): Promise<Transaction> {
     const categoryRepo = getRepository(Category);
 
     let categoryInstance = await categoryRepo.findOne({ title: category });
@@ -40,9 +41,9 @@ class CreateTransactionService {
       category_id,
     });
 
-    transactionRepo.save(newTransaction);
+    await transactionRepo.save(newTransaction);
 
-    console.log(newTransaction);
+    return newTransaction;
   }
 }
 
