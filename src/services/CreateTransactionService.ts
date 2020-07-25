@@ -7,6 +7,8 @@ import TransactionsRepository from '../repositories/TransactionsRepository';
 import Category from '../models/Category';
 import Transaction from '../models/Transaction';
 
+import AppError from '../errors/AppError';
+
 interface Request {
   title: string;
   value: number;
@@ -40,6 +42,10 @@ class CreateTransactionService {
       value,
       category_id,
     });
+
+    const { total } = await transactionRepo.getBalance();
+    if (type === 'outcome' && value > total)
+      throw new AppError('Insufficient funds', 400);
 
     await transactionRepo.save(newTransaction);
 
