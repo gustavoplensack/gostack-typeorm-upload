@@ -28,7 +28,7 @@ class Transaction {
   @Column('int')
   value: number;
 
-  @Column()
+  @Column({ select: false })
   category_id: string;
 
   @ManyToOne(() => Category)
